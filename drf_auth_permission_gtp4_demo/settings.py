@@ -117,6 +117,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+# 手动注册自己的User模型
+AUTH_USER_MODEL = 'rbac_app.User'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
+    phone = models.CharField(max_length=11, unique=True, verbose_name='手机号')
     """
     如果不配置如下的部分，迁移数据库时会报错：
     > python manage.py makemigrations

@@ -12,7 +12,8 @@ class CacheUserPermissionsMiddleware(MiddlewareMixin):
                 roles = UserRole.objects.filter(user=request.user).values_list('role', flat=True)
                 permissions = RolePermission.objects.filter(role__in=roles).values_list('permission__codename', flat=True)
                 permissions_list = list(permissions)
-                redis_client.set(user_key, permissions_list, ex=36000)  # 设置1小时的过期时间
+                permissions_str = ','.join(permissions_list)  # 将列表转换为字符串, 以逗号分隔, 否则redis会报错，因为redis不能直接存储列表
+                redis_client.set(user_key, permissions_str, ex=36000)  # 设置1小时的过期时间
                 request.user.permissions = permissions_list
             else:
                 request.user.permissions = redis_client.get(user_key)
