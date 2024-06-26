@@ -35,20 +35,32 @@ class User(AbstractUser):
         verbose_name='user permissions'
     )
 
+    def __str__(self):
+        return self.username
+
 class Role(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    def __str__(self):
+        return self.name
 
 class Permission(models.Model):
     name = models.CharField(max_length=255, unique=True)
     codename = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
 
 class UserRole(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    def __str__(self):
+        return f'{self.user.username} - {self.role.name}'
 
 class RolePermission(models.Model):
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
+    def __str__(self):
+        return f'{self.role.name} - {self.permission.name}'
+
 class TaskExecRecord(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     task_name = models.CharField(max_length=255)
@@ -63,3 +75,5 @@ class TaskExecRecord(models.Model):
         ordering = ['-create_time']
         verbose_name = '任务执行记录'
         verbose_name_plural = '任务执行记录'
+    def __str__(self):
+        return f'{self.user.username} - {self.task_name}'

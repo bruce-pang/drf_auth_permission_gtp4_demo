@@ -10,6 +10,18 @@ class UserAdmin(BaseUserAdmin):
     """
     model = User
 
+class RoleAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+class PermissionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'codename']
+
+class UserRoleAdmin(admin.ModelAdmin):
+    list_display = ['user', 'role']
+
+class RolePermissionAdmin(admin.ModelAdmin):
+    list_display = ['role', 'permission']
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Role)
 admin.site.register(UserRole)
