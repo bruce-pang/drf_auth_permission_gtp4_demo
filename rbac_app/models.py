@@ -5,6 +5,20 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
+    """
+    如果不配置如下的部分，迁移数据库时会报错：
+    > python manage.py makemigrations
+    SystemCheckError: System check identified some issues:
+    ERRORS:
+    auth.User.groups: (fields.E304) Reverse accessor 'Group.user_set' for 'auth.User.groups' clashes with reverse accessor for 'rbac_app.User.groups'.
+            HINT: Add or change a related_name argument to the definition for 'auth.User.groups' or 'rbac_app.User.groups'.
+    auth.User.user_permissions: (fields.E304) Reverse accessor 'Permission.user_set' for 'auth.User.user_permissions' clashes with reverse accessor for 'rbac_app.User.user_permissions'.
+            HINT: Add or change a related_name argument to the definition for 'auth.User.user_permissions' or 'rbac_app.User.user_permissions'.
+    rbac_app.User.groups: (fields.E304) Reverse accessor 'Group.user_set' for 'rbac_app.User.groups' clashes with reverse accessor for 'auth.User.groups'.
+            HINT: Add or change a related_name argument to the definition for 'rbac_app.User.groups' or 'auth.User.groups'.
+    rbac_app.User.user_permissions: (fields.E304) Reverse accessor 'Permission.user_set' for 'rbac_app.User.user_permissions' clashes with reverse accessor for 'auth.User.user_permissions'.
+            HINT: Add or change a related_name argument to the definition for 'rbac_app.User.user_permissions' or 'auth.User.user_permissions'.
+    """
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='rbac_app_user_set',
